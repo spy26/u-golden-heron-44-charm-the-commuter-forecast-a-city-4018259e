@@ -25,6 +25,16 @@ if (chars.length < 1 || chars.length > 140 || FORECAST.trim().length === 0) {
 if (FORECAST !== FORECAST.trim() || FORECAST.includes("\n")) {
   throw new Error("entry must be a single line with no surrounding whitespace");
 }
+// The judge's first criterion is the forecast's whole point: it must name an
+// invented city and give it weather. Guard both explicitly — a forecast that
+// lost the city name or the temperature in a later edit must fail loudly
+// here, never reach the judge as a generic line.
+if (!FORECAST.includes("Drizzlewick")) {
+  throw new Error("entry must name the invented city Drizzlewick");
+}
+if (!/\d+ degrees/.test(FORECAST)) {
+  throw new Error("entry must give the city a temperature");
+}
 
 // The harness points MAKEFUN_OUTPUT_DIR at the writable /output; write there
 // when it is set, and to /output directly as well, so the gate finds the file
